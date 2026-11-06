@@ -1,8 +1,7 @@
- 
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { GoogleGenAI } = require('@google/genai');
 
-// Initialize with your API key from the .env file
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+// Initialize with the  SDK
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 const generateBattleCommentary = async (battleDetails) => {
   const { attacker, defender, attackerRolls, defenderRolls, attackerLosses, defenderLosses, conquered } = battleDetails;
@@ -23,14 +22,15 @@ const generateBattleCommentary = async (battleDetails) => {
   `;
 
   try {
-    // Use the fast, free flash model
-    const model = genAI.getGenerativeModel({ model: "gemini-3.5-flash-lite" });
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    return response.text().trim();
+    
+    const response = await ai.models.generateContent({
+      model: 'gemini-3.5-flash-lite',
+      contents: prompt,
+    });
+
+    return response.text.trim();
   } catch (error) {
-    console.error("LLM Error:", error);
-    // Fallback if the AI fails
+    console.log("AI generation failed, using fallback:", error.message);
     return `The forces of ${attacker} clashed with ${defender}. Losses were heavy on both sides.`; 
   }
 };
