@@ -106,7 +106,7 @@ function App() {
         const defender = enemyCountries.sort((a, b) => a.soldiers - b.soldiers)[0];
 
         try {
-          const response = await axios.post(`http://localhost:5000/api/game/${gameData.gameId}/npc-attack`, {
+          const response = await axios.post(`https://geopolitics-backend-sqjr.onrender.com/api/game/${gameData.gameId}/npc-attack`, {
             attackerCountryName: attacker.name,
             defenderCountryName: defender.name
           });
@@ -139,7 +139,7 @@ function App() {
       // Wait 2.5 seconds before ending the turn
       setTimeout(async () => {
         try {
-          const endTurnRes = await axios.post(`http://localhost:5000/api/game/${gameData.gameId}/end-turn`);
+          const endTurnRes = await axios.post(`https://geopolitics-backend-sqjr.onrender.com/api/game/${gameData.gameId}/end-turn`);
           setGameData(endTurnRes.data.game);
         } catch (error) {
           console.error("NPC failed to end turn:", error);
@@ -173,7 +173,7 @@ function App() {
 
     try {
       // Connect to our Express backend
-      const response = await axios.post('http://localhost:5000/api/game/create', {
+      const response = await axios.post('https://geopolitics-backend-sqjr.onrender.com/api/game/create', {
         playerName,
         selectedCountry
       });
@@ -194,7 +194,7 @@ function App() {
     
     setIsActionLoading(true);
     try {
-      const response = await axios.post(`http://localhost:5000/api/game/${gameData.gameId}/attack`, {
+      const response = await axios.post(`https://geopolitics-backend-sqjr.onrender.com/api/game/${gameData.gameId}/attack`, {
         attackerCountryName: selectedAttacker,
         defenderCountryName: selectedDefender,
         action: 'roll'
@@ -256,7 +256,7 @@ function App() {
     
     setIsActionLoading(true);
     try {
-      const response = await axios.post(`http://localhost:5000/api/game/${gameData.gameId}/transfer`, {
+      const response = await axios.post(`https://geopolitics-backend-sqjr.onrender.com/api/game/${gameData.gameId}/transfer`, {
         fromCountryName: selectedAttacker,
         toCountryName: selectedDefender,
         amount: transferAmount
@@ -284,7 +284,7 @@ function App() {
     const handleEndTurn = async () => {
     setIsActionLoading(true);
     try {
-      const response = await axios.post(`http://localhost:5000/api/game/${gameData.gameId}/end-turn`);
+      const response = await axios.post(`https://geopolitics-backend-sqjr.onrender.com/api/game/${gameData.gameId}/end-turn`);
       if (response.data.success) {
         setGameData(response.data.game);
         setSelectedAttacker(null);
